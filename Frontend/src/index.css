@@ -1,9 +1,2 @@
 @import "tailwindcss";
 
-body{
-    background-image:  url('https://4kwallpapers.com/images/walls/thumbs_3t/11142.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-}
