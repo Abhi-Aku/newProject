@@ -1,7 +1,9 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -30,8 +32,8 @@ const jwtAuth = (req, res, next) => {
 };
 
 // Generating token
-const generateToken = (user) => {
-  return jwt.sign({user}, process.env.JWT_SECRET);
+const generateToken = (userData) => {
+  return jwt.sign({userData}, process.env.JWT_SECRET);
 };
 
 // User Schema
@@ -52,26 +54,19 @@ app.post('/signupData', async (req, res) => {
     const { name, lastname, gender, phone, email, password } = req.body;
     const user = new SignUp({ name, lastname, gender, phone, email, password });
     const response = await user.save();
-    // Generate token
-
-  const paylod = {
-     name: response.name, 
-    email: response.email 
-  };
-
-
-    const token = generateToken( paylod);
-    console .log(token);
-
     
-    
+    // Generate token with user data
+    const token = generateToken({ id: response._id, name: response.name, email: response.email });
 
-    return res.status(201).json({ message: 'User Created',response :token });
+    console.log("Generated Token:", token);
+    
+    return res.status(201).json({ message: 'User Created', token });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: 'Bad Request' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
