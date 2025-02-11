@@ -19,6 +19,9 @@ mongoose.connect('mongodb://localhost:27017/GetHubAuth', {
 
 // JWT authentication middleware
 const jwtAuth = (req, res, next) => {
+  const Authorization = req.headers['authorization'];
+  if (!Authorization) return res.status(401).json({ message: 'Auth Error' });
+
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ message: 'Auth Error' });
 
@@ -96,7 +99,7 @@ app.post('/LoginData', async (req, res) => {
 });
 
 // get user data 
-app.get ('/Data', async (req, res) => {
+app.get ('/Data',jwtAuth, async (req, res) => {
   try {
     const user = await SignUp.find();
     return res.status(200).json(user);
