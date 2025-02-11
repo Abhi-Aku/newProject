@@ -12,7 +12,6 @@ const App = () => {
       path: "/",
       element: (
         <>
-          <NavBar />
           <Home />
         </>
       ),
@@ -21,7 +20,6 @@ const App = () => {
       path: "/signUp",
       element: (
         <>
-          <NavBar />
           <SignUp />
         </>
       ),
@@ -30,8 +28,7 @@ const App = () => {
       path: "/login",
       element: (
         <>
-          <NavBar />
-          <Login />
+        <Login />
         </>
       ),
     },
@@ -39,7 +36,6 @@ const App = () => {
       path: "/dashbord",
       element: (
         <>
-          <NavBar />
           <Dashbord />
         </>
       ),
