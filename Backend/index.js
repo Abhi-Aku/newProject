@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 require('dotenv').config();
 
@@ -8,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(bodyParser.json());
+app .use(cors());
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/GetHubAuth', {
@@ -57,18 +59,7 @@ app.post('/Data', async (req, res) => {
     const { name, lastname, gender, phone, email, password } = req.body;
     const user = new SignUp({ name, lastname, gender, phone, email, password });
     const response = await user.save();
-
-    // payload
-    const payload = {
-       id: response._id, 
-       name: response.name,
-        email: response.email
-       };
-    
-    const token = generateToken(payload,{expiresIn: '1h'}); 
-
-    console.log("Generated Token:", token);
-    return res.status(201).json({ message: 'User Created', token });
+    return res.status(201).json({ message: 'User Created', response });
   } catch (err) {
     console.log(err);
     return res.status(400).json({ message: 'Bad Request' });
@@ -88,7 +79,7 @@ app.post('/LoginData', async (req, res) => {
         email: user.email
       };
       const token = generateToken(payload);
-      return res.status(200).json({ message: 'Login success', token });
+      return res.status(200).json({ message: 'Login success', token,user });
     } else {
       return res.status(400).json({ message: 'Not login' });
     }

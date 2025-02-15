@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const Login = () => {
-    const Navigation = useNavigate()
-  
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,10 +19,15 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    Navigation('/dashbord')
+    try {
+      const response = await axios.post("http://localhost:4000/LoginData", formData);
+      console.log("Everything ok", response);
+      navigate('/dashbord')
+    } catch (err) {
+      console.log("Everything is not ok", err);
+    }
   };
 
   return (
@@ -32,8 +37,6 @@ const Login = () => {
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
       >
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-
-        {/* Name Field */}
 
         {/* Email Field */}
         <div className="mb-4">
