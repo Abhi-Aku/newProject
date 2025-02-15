@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.use(bodyParser.json());
 
@@ -75,7 +75,6 @@ app.post('/Data', async (req, res) => {
   }
 });
 // Login route
-//not add somthing
 
 app.post('/LoginData', async (req, res) => {
   try {
