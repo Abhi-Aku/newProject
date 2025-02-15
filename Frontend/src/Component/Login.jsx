@@ -24,6 +24,7 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:4000/LoginData", formData);
       console.log("Everything ok", response);
+      
       navigate('/dashbord')
     } catch (err) {
       console.log("Everything is not ok", err);
